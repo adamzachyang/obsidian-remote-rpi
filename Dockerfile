@@ -1,24 +1,30 @@
-FROM ghcr.io/linuxserver/baseimage-kasmvnc:debianbullseye
+FROM ghcr.io/linuxserver/baseimage-kasmvnc:ubuntujammy
 
-LABEL maintainer="github@sytone.com" \
-      org.opencontainers.image.authors="github@sytone.com" \
-      org.opencontainers.image.source="https://github.com/sytone/obsidian-remote" \
-      org.opencontainers.image.title="Container hosted Obsidian MD" \
-      org.opencontainers.image.description="Hosted Obsidian instance allowing access via web browser"
+ARG OBSIDIAN_VERSION=1.3.5
+ARG ARCH=arm64
 
 # Update and install extra packages.
 RUN echo "**** install packages ****" && \
     apt-get update && \
-    apt-get install -y --no-install-recommends curl libgtk-3-0 libnotify4 libatspi2.0-0 libsecret-1-0 libnss3 desktop-file-utils fonts-noto-color-emoji git ssh-askpass && \
-    apt-get autoclean && rm -rf /var/lib/apt/lists/* /var/tmp/* /tmp/*
-
-# Set version label
-ARG OBSIDIAN_VERSION=1.4.16
+    apt-get install -y --no-install-recommends \
+        git \
+        curl \
+        libnss3 \
+        zlib1g-dev \
+        dbus-x11 \
+        uuid-runtime && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/* /var/tmp/* /tmp/*
 
 # Download and install Obsidian
 RUN echo "**** download obsidian ****" && \
-    curl --location --output obsidian.deb "https://github.com/obsidianmd/obsidian-releases/releases/download/v${OBSIDIAN_VERSION}/obsidian_${OBSIDIAN_VERSION}_amd64.deb" && \
-    dpkg -i obsidian.deb
+    curl -L -o /obsidian.AppImage \
+        "https://github.com/obsidianmd/obsidian-releases/releases/download/v${OBSIDIAN_VERSION}/Obsidian-${OBSIDIAN_VERSION}-${ARCH}.AppImage" && \
+    chmod +x /obsidian.AppImage && \
+    /obsidian.AppImage --appimage-extract
+
+# Install required packages
+RUN apt update && apt install libfuse2 libatk1.0-0 libatk-bridge2.0-0 libcups2 libgtk-3-0 -y
 
 # Environment variables
 ENV CUSTOM_PORT="8080" \
@@ -26,12 +32,14 @@ ENV CUSTOM_PORT="8080" \
     CUSTOM_USER="" \
     PASSWORD="" \
     SUBFOLDER="" \
-    TITLE="Obsidian v${OBSIDIAN_VERSION}" \
+    TITLE="Obsidian v$OBSIDIAN_VERSION" \
     FM_HOME="/vaults"
 
 # Add local files
 COPY root/ /
-EXPOSE 8080 8443
+
+# Expose ports and volumes
+EXPOSE 8080 27123 27124
 VOLUME ["/config","/vaults"]
 
 # Define a healthcheck
