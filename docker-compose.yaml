@@ -1,7 +1,7 @@
 
 services:
   obsidian:
-    image: 'docker.io/library/obsidian-remote-rpi4'
+    image: 'docker.io/library/obsidian-remote-rpi'
     container_name: obsidian-remote
     restart: unless-stopped
     hostname: obsidian-remote
