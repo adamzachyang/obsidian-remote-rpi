@@ -26,7 +26,7 @@ Use `http://localhost:8080/` to access it locally, do not expose this to the web
 - [Copy/Paste From External Source](#copypaste-from-external-source)
 
 ## Using the Container
-To use this, build the image locally using `docker build . -t obsidian-remote-rpi4`, then run `docker compose up` and the Guacamole desktop and Obsidian should be accessible on the machine IP port 8080.  
+To use this, build the image locally using `docker build . -t obsidian-remote-rpi`, then run `docker compose up` and the Guacamole desktop and Obsidian should be accessible on the machine IP port 8080.  
 
 
 ### Ports
