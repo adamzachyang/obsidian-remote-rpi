@@ -1,6 +1,6 @@
 FROM ghcr.io/linuxserver/baseimage-kasmvnc:ubuntujammy
 
-ARG OBSIDIAN_VERSION=1.3.5
+ARG OBSIDIAN_VERSION=1.5.8
 ARG ARCH=arm64
 
 # Update and install extra packages.
