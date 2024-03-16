@@ -49,19 +49,19 @@ jobs:
         uses: docker/metadata-action@v5
         with:
           images: |
-            ${{ secrets.DOCKERHUB_USERNAME }}/obsidian-remote
+            ${{ secrets.DOCKERHUB_USERNAME }}/obsidian-remote-rpi
 
       - name: Build and push Docker images
         uses: docker/build-push-action@v5
         with:
           context: .
-          file: dockerfile.amd64
-          platforms: linux/amd64
+          file: Dockerfile
+          platforms: linux/arm64
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/obsidian-remote:latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/obsidian-remote-rpi:latest
           labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/obsidian-remote:buildcache_amd64
-          cache-to: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/obsidian-remote:buildcache_amd64,mode=max
+          cache-from: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/obsidian-remote-rpi:buildcache_arm64
+          cache-to: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/obsidian-remote-rpi:buildcache_arm64,mode=max
 
 #      - name: Build and push Docker images
 #        uses: docker/build-push-action@v5
