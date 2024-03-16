@@ -56,7 +56,7 @@ jobs:
         with:
           context: .
           file: Dockerfile
-          platforms: linux/arm/v7
+          platforms: linux/arm64
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/obsidian-remote-rpi:latest
           labels: ${{ steps.meta.outputs.labels }}
