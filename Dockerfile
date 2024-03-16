@@ -1,4 +1,4 @@
-FROM ghcr.io/linuxserver/baseimage-kasmvnc:ubuntujammy
+FROM --platform=linux/arm64 ghcr.io/linuxserver/baseimage-kasmvnc:ubuntujammy
 
 ARG OBSIDIAN_VERSION=1.5.8
 ARG ARCH=arm64
